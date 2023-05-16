@@ -33,9 +33,9 @@
             <tbody>
                 <c:forEach var="estadisticasDatos" items="${estadisticas}">
                     <tr>
-                        <td>${estadisticasDatos.EdadMasJoven}</td>
-                        <td>${estadisticasDatos.EdadMasViejo}</td>
-                        <td>${estadisticasDatos.MediaEdades}</td>
+                        <td>${estadisticasDatos.EdadMinima}</td>
+                        <td>${estadisticasDatos.EdadMaxima}</td>
+                        <td>${estadisticasDatos.EdadMedia}</td>
                         <td>${estadisticasDatos.SumaEdades}</td>                       
                     </tr>
                 </c:forEach>

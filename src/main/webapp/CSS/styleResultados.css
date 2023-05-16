@@ -30,3 +30,7 @@ body {
 a {
     color: lightgreen;
 }
+
+td{
+    padding:4px ;
+}

@@ -121,7 +121,9 @@ public class FrontController extends HttpServlet {
                 break;
 
             case "8":
-                sql = "SELECT DATEDIFF(CURDATE(), MIN(FechaNacimiento)) / 365 AS EdadMasJoven, DATEDIFF(CURDATE(), MAX(FechaNacimiento)) / 365 AS EdadMasViejo, ROUND(AVG(DATEDIFF(CURDATE(), FechaNacimiento) / 365), 0) AS MediaEdades, SUM(DATEDIFF(CURDATE(), FechaNacimiento) / 365) AS SumaEdades FROM datosAlumnos;";
+                sql = "SELECT FLOOR(MIN(DATEDIFF(CURRENT_DATE, FechaNacimiento) / 365)) AS EdadMinima, FLOOR(MAX(DATEDIFF(CURRENT_DATE, FechaNacimiento) / 365)) AS EdadMaxima,\n"
+                        + "ROUND(AVG(DATEDIFF(CURRENT_DATE, FechaNacimiento) / 365), 1) AS EdadMedia,\n"
+                        + "SUM(DATEDIFF(CURRENT_DATE, FechaNacimiento) / 365) AS SumaEdades FROM datosalumnos;";
                 url = "JSP/consulta8.jsp";
                 break;
         }
@@ -130,7 +132,6 @@ public class FrontController extends HttpServlet {
             preparada = conexion.prepareStatement(sql);
             resultado = preparada.executeQuery();
 
-            //ARREGLAR 4, 7 Y 8
             while (resultado.next()) {
                 Map<String, Object> alumno = new HashMap<>();
 
@@ -161,9 +162,9 @@ public class FrontController extends HttpServlet {
 
                 if (op.equals("8")) {
                     Map<String, Object> datosEstadisticos = new HashMap<>();
-                    datosEstadisticos.put("EdadMasJoven", resultado.getDouble("EdadMasJoven"));
-                    datosEstadisticos.put("EdadMasViejo", resultado.getDouble("EdadMasViejo"));
-                    datosEstadisticos.put("MediaEdades", resultado.getDouble("MediaEdades"));
+                    datosEstadisticos.put("EdadMinima", resultado.getInt("EdadMinima"));
+                    datosEstadisticos.put("EdadMaxima", resultado.getInt("EdadMaxima"));
+                    datosEstadisticos.put("EdadMedia", resultado.getDouble("EdadMedia"));
                     datosEstadisticos.put("SumaEdades", resultado.getDouble("SumaEdades"));
                     listaEstadisticas.add(datosEstadisticos);
 
@@ -175,7 +176,6 @@ public class FrontController extends HttpServlet {
                     ciclo.put("Abreviatura", resultado.getString("Abreviatura"));
                     ciclo.put("HorasFCT", resultado.getShort("HorasFCT"));
                     ciclo.put("Ley", resultado.getString("Ley"));
-
                     listaCiclos.add(ciclo);
                 }
             }
